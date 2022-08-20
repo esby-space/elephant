@@ -7,7 +7,7 @@
         "distDir": "../dist"
     },
     "package": {
-        "productName": "elephant",
+        "productName": "elephant cards",
         "version": "0.1.0"
     },
     "tauri": {
@@ -62,7 +62,7 @@
                 "fullscreen": false,
                 "height": 600,
                 "resizable": true,
-                "title": "elephant",
+                "title": "elephant cards",
                 "width": 800
             }
         ]

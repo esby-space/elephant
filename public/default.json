@@ -1,0 +1,31 @@
+{
+    "decks": [
+        {
+            "name": "deck 1",
+            "cards": [
+                {
+                    "question": "this is deck 1 speaking",
+                    "answer": "hello deck 1!"
+                }
+            ]
+        },
+        {
+            "name": "deck 2",
+            "cards": [
+                {
+                    "question": "this is deck 2 speaking",
+                    "answer": "hello deck 2!"
+                }
+            ]
+        },
+        {
+            "name": "deck 3",
+            "cards": [
+                {
+                    "question": "this is deck 3 speaking",
+                    "answer": "hello deck 3!"
+                }
+            ]
+        }
+    ]
+}
