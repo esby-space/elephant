@@ -1,3 +1,4 @@
+import { Keyboard } from "./keyboard";
 import {
     readTextFile,
     writeTextFile,
@@ -25,37 +26,62 @@ const fetchData = async () => {
     return JSON.parse(contents);
 };
 
-const UI = {
+const UI = (() => ({
     data: null as any,
-
     files: document.querySelector("#files") as HTMLElement,
-    card: document.querySelector("#card") as HTMLElement,
     init(data: any) {
         this.data = data;
 
         // fill in side bar with card decks
-        this.data.decks.forEach((deck: any) => {
+        data.decks.forEach((deck: any, i: number) => {
             const element = document.createElement("li");
             element.innerHTML = deck.name;
             this.files.append(element);
-            element.onclick = (event) => this.changeDeck(event);
+            element.onclick = () => (this.deck = i);
         });
 
-        // flip card when click
-        this.card.onclick = () => this.flipCard();
+        // handle cards
+        const card = document.querySelector("#card") as HTMLElement;
+        card.onclick = () => (this.flipped = !this.flipped);
+        Keyboard("ArrowRight").press = () => this.card++;
+        Keyboard("ArrowLeft").press = () => this.card--;
     },
 
-    changeDeck(event: MouseEvent) {
+    _deck: 0,
+    set deck(i: number) {
+        this._deck = i;
         document.querySelector(".active-deck")?.classList.remove("active-deck");
-        (event.target as HTMLUListElement).classList.add("active-deck");
+        this.files.children[i].classList.add("active-deck");
+
+        this.flipped = false;
+        this.card = 0;
     },
 
+    _card: 0,
     question: document.querySelector("#question") as HTMLElement,
     answer: document.querySelector("#answer") as HTMLElement,
-    flipCard() {
-        this.question.hidden = !this.question.hidden;
-        this.answer.hidden = !this.answer.hidden;
+    set card(i: number) {
+        const deck = this.data.decks[this._deck];
+        if (i < 0 || i >= deck.cards.length) return;
+
+        this._card = i;
+        this.question.innerHTML = deck.cards[i].question;
+        this.answer.innerHTML = deck.cards[i].answer;
+        this.flipped = false;
     },
-};
+
+    get card() {
+        return this._card;
+    },
+
+    set flipped(flipped: boolean) {
+        this.question.hidden = flipped;
+        this.answer.hidden = !flipped;
+    },
+
+    get flipped() {
+        return this.question.hidden;
+    },
+}))();
 
 main();

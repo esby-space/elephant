@@ -6,6 +6,10 @@
                 {
                     "question": "this is deck 1 speaking",
                     "answer": "hello deck 1!"
+                },
+                {
+                    "question": "card 2 of deck 1 speaking!",
+                    "answer": "hola"
                 }
             ]
         },
