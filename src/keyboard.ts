@@ -7,7 +7,7 @@ export const Keyboard = (value: string) => {
         release: null as (() => void) | null,
 
         downHandler(event: KeyboardEvent) {
-            if (event.key === key.value) {
+            if (event.key == key.value) {
                 if (!key.pressed && key.press) key.press();
                 key.pressed = true;
                 event.preventDefault();
@@ -15,7 +15,7 @@ export const Keyboard = (value: string) => {
         },
 
         upHandler(event: KeyboardEvent) {
-            if (event.key === key.value) {
+            if (event.key == key.value) {
                 if (key.pressed && key.release) key.release();
                 key.pressed = false;
                 event.preventDefault();

@@ -1,8 +1,12 @@
 @import "./normalize.css";
 
+[hidden] {
+    display: none !important;
+}
+
 :root {
     --primary: #5b5f97;
-    --secondary: #a5c4d4;
+    --secondary: #373958;
     --accent: #ef436b;
     --roundiness: 0.5rem;
 }
@@ -28,6 +32,10 @@ main {
 aside {
     background-color: var(--primary); 
     color: white;
+    margin-block: 1rem;
+    margin-left: 1rem;
+    border-radius: var(--roundiness);
+    box-shadow: 0 0 1rem lightgrey;
 }
 
 aside h2 {
@@ -51,7 +59,7 @@ aside li:hover, .active-deck {
     background-color: var(--secondary);
 }
 
-#create {
+#create, #new-deck button {
     display: block;
     margin-inline: auto;
     background-color: var(--accent);
@@ -67,9 +75,48 @@ section {
     display: grid;
     place-items: center;
     width: 36rem;
-    aspect-ratio: 5 / 3;
+    aspect-ratio: 3 / 2;
     box-shadow: 0 0 1rem lightgrey;
     border-radius: var(--roundiness);
     text-align: center;
     cursor: pointer;
 }
+
+.modal {
+    position: fixed;
+    top: 4rem;
+    left: 4rem;
+    z-index: 1;
+    width: calc(100% - 8rem);
+    height: calc(100% - 8rem);
+    padding-inline: 1rem;
+    background-color: var(--secondary);
+    border-radius: var(--roundiness);
+    color: white;
+}
+
+#new-deck {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-block: 1rem;
+}
+
+#new-deck p {
+    text-align: center;
+}
+
+#new-deck input, #new-deck textarea {
+    display: block;
+    padding: 0.5rem;
+    background-color: var(--secondary);
+    border: 1px solid var(--primary);
+    border-radius: var(--roundiness);
+    font-size: 1rem;
+    color: white;
+}
+
+#new-deck textarea {
+    flex-grow: 1;
+}
+

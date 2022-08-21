@@ -5,13 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>elephant</title>
 
-        <link rel="stylesheet" href="./style.css"> 
+        <link rel="stylesheet" href="./style.css" />
     </head>
 
     <body>
-        <main> 
+        <main>
             <aside>
-                <h2>elephant cards</h2>
+                <h2>elephant</h2>
                 <ul id="files"></ul>
                 <button id="create">create</button>
             </aside>
@@ -26,7 +26,13 @@
             </section>
         </main>
 
+        <div id="new-deck" class="modal" hidden>
+            <p>create a new deck</p>
+            <input type="text" placeholder="deck name">
+            <textarea placeholder="question [ tab ] answer"></textarea>
+            <button>create</button>
+        </div>
+
         <script type="module" src="./src/main.ts"></script>
     </body>
 </html>
-

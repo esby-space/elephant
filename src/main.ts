@@ -1,4 +1,5 @@
 import { Keyboard } from "./keyboard";
+import { Card, Deck, Data } from "./types";
 import {
     readTextFile,
     writeTextFile,
@@ -7,33 +8,62 @@ import {
 } from "@tauri-apps/api/fs";
 
 const main = async () => {
-    const data = await fetchData();
-    UI.init(data);
+    await Data.fetch();
+    UI.init();
 };
 
-const fetchData = async () => {
-    const contents = await readTextFile("cards.json", {
-        dir: BaseDirectory.App,
-    }).catch(async () => {
-        const response = await fetch("./default.json");
-        const data = await response.text();
+const Data = {
+    data: null as Data | null,
 
-        await createDir("", { dir: BaseDirectory.App, recursive: true });
+    async fetch() {
+        const contents = await readTextFile("cards.json", {
+            dir: BaseDirectory.App,
+        }).catch(async () => {
+            const response = await fetch("./default.json");
+            const data = await response.text();
+
+            await createDir("", { dir: BaseDirectory.App, recursive: true });
+            await writeTextFile("cards.json", data, { dir: BaseDirectory.App });
+            return data;
+        });
+
+        this.data = JSON.parse(contents);
+    },
+
+    async updateJSON() {
+        const data = JSON.stringify(this.data);
         await writeTextFile("cards.json", data, { dir: BaseDirectory.App });
-        return data;
-    });
+    },
 
-    return JSON.parse(contents);
+    deck(id: number) {
+        return this.data?.decks[id] as Deck;
+    },
+
+    card(deck: number, card: number) {
+        return this.deck(deck).cards[card];
+    },
+
+    async newDeck(name: string, deckString: string) {
+        const cards = deckString.split("\n").map((line) => {
+            const texts = line.split("\t");
+            return {
+                question: texts[0],
+                answer: texts[1],
+            } as Card;
+        });
+
+        const deck = { name, cards } as Deck;
+        this.data!.decks.push(deck);
+        await this.updateJSON();
+        return deck;
+    },
 };
 
-const UI = (() => ({
-    data: null as any,
+const UI = {
     files: document.querySelector("#files") as HTMLElement,
-    init(data: any) {
-        this.data = data;
-
+    init() {
         // fill in side bar with card decks
-        data.decks.forEach((deck: any, i: number) => {
+        Data.data?.decks.forEach((deck: any, i: number) => {
             const element = document.createElement("li");
             element.innerHTML = deck.name;
             this.files.append(element);
@@ -45,6 +75,47 @@ const UI = (() => ({
         card.onclick = () => (this.flipped = !this.flipped);
         Keyboard("ArrowRight").press = () => this.card++;
         Keyboard("ArrowLeft").press = () => this.card--;
+
+        // modals
+        const deckModal = document.querySelector("#new-deck") as HTMLElement;
+        const create = document.querySelector("#create") as HTMLElement;
+        create.onclick = () => (deckModal.hidden = false);
+        Keyboard("Escape").press = () => (deckModal.hidden = true);
+
+        // new deck modal
+        const deckName = document.querySelector(
+            "#new-deck input"
+        ) as HTMLInputElement;
+        const textArea = document.querySelector(
+            "#new-deck textarea"
+        ) as HTMLTextAreaElement;
+
+        // allow user to type tab
+        textArea.addEventListener("keydown", function (event) {
+            if (event.key == "Tab") {
+                event.preventDefault();
+
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value =
+                    this.value.substring(0, start) +
+                    "\t" +
+                    this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 1;
+            }
+        });
+
+        // create a new deck
+        const createDeck = document.querySelector(
+            "#new-deck button"
+        ) as HTMLElement;
+        createDeck.onclick = async () => {
+            const deck = await Data.newDeck(deckName.value, textArea.value);
+            const element = document.createElement("li");
+            element.innerHTML = deck.name;
+            this.files.append(element);
+            element.onclick = () => (this.deck = Data.data!.decks.length - 1);
+        };
     },
 
     _deck: 0,
@@ -57,16 +128,17 @@ const UI = (() => ({
         this.card = 0;
     },
 
-    _card: 0,
     question: document.querySelector("#question") as HTMLElement,
     answer: document.querySelector("#answer") as HTMLElement,
-    set card(i: number) {
-        const deck = this.data.decks[this._deck];
-        if (i < 0 || i >= deck.cards.length) return;
 
+    _card: 0,
+    set card(i: number) {
+        if (i < 0 || i >= Data.deck(this._deck).cards.length) return;
         this._card = i;
-        this.question.innerHTML = deck.cards[i].question;
-        this.answer.innerHTML = deck.cards[i].answer;
+
+        const card = Data.card(this._deck, this._card);
+        this.question.innerHTML = card.question;
+        this.answer.innerHTML = card.answer;
         this.flipped = false;
     },
 
@@ -82,6 +154,6 @@ const UI = (() => ({
     get flipped() {
         return this.question.hidden;
     },
-}))();
+};
 
 main();
