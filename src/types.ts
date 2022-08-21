@@ -1,18 +1,18 @@
 // describing the structure of cards.json
 
-type Data = {
-    decks: Deck[];
+type IData = {
+    decks: IDeck[];
 }
 
-type Deck = {
+type IDeck = {
     name: string;
-    cards: Card[];
+    cards: ICard[];
 }
 
-type Card = {
+type ICard = {
     question: string;
     answer: string;
 };
 
-export type { Card, Deck, Data };
+export type { ICard, IDeck, IData };
 

@@ -15,7 +15,7 @@
             "all": true,
             "fs": {
                 "all": true,
-                "scope": ["$APP", "$APP/cards.json"]
+                "scope": ["$APP", "$APP/elephant.json"]
             }
         },
         "bundle": {
@@ -60,10 +60,10 @@
         "windows": [
             {
                 "fullscreen": false,
-                "height": 600,
+                "width": 800,
+                "height": 450,
                 "resizable": true,
-                "title": "",
-                "width": 800
+                "title": ""
             }
         ]
     }
