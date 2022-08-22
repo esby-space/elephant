@@ -55,11 +55,11 @@ export const Data = {
     },
 
     async deleteDeck(id: number) {
-        this.decks.splice(id);
+        this.decks.splice(id, id - 1);
         await this.updateJSON();
     },
 
-    async updateDeck(
+    async editDeck(
         id: number,
         { name, text }: { name?: string; text?: string }
     ) {

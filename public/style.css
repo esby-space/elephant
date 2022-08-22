@@ -30,12 +30,13 @@ main {
 }
 
 aside {
-    background-color: var(--primary); 
+    background-color: var(--primary);
     color: white;
     margin-block: 1rem;
     margin-left: 1rem;
     border-radius: var(--roundiness);
     box-shadow: 0 0 1rem lightgrey;
+    overflow-y: scroll;
 }
 
 aside h2 {
@@ -49,17 +50,33 @@ aside ul {
 }
 
 aside li {
+    position: relative;
     border-radius: var(--roundiness);
     padding: 0.5rem;
     margin-block: 0.5rem;
     cursor: pointer;
 }
 
-aside li:hover, .active-deck {
+aside li span {
+    position: absolute;
+    right: 1rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+}
+
+aside li span:hover {
+    background-color: var(--primary); 
+}
+
+aside li:hover,
+.active-deck {
     background-color: var(--secondary);
 }
 
-#create, #new-deck button {
+#create,
+#new-deck button {
     display: block;
     margin-inline: auto;
     background-color: var(--accent);
@@ -80,6 +97,26 @@ section {
     border-radius: var(--roundiness);
     text-align: center;
     cursor: pointer;
+}
+
+.context-menu {
+    position: fixed;
+    z-index: 10;
+    width: max-content;
+    background-color: var(--secondary);
+    color: white;
+    border-radius: var(--roundiness);
+}
+
+.context-menu p {
+    margin-block: 0rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: var(--roundiness);
+}
+
+.context-menu p:hover {
+    background-color: var(--accent);
 }
 
 .modal {
@@ -106,7 +143,8 @@ section {
     text-align: center;
 }
 
-#new-deck input, #new-deck textarea {
+#new-deck input,
+#new-deck textarea {
     display: block;
     padding: 0.5rem;
     background-color: var(--secondary);
@@ -118,5 +156,6 @@ section {
 
 #new-deck textarea {
     flex-grow: 1;
+    resize: none;
+    white-space: pre !important;
 }
-

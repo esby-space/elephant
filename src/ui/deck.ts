@@ -12,12 +12,44 @@ export const Deck = {
         this.deck = 0;
     },
 
+    context: document.querySelector("#deck-context") as HTMLElement,
+    delete: document.querySelector("#delete-deck") as HTMLElement,
+
     createDeck(name: string, id: number) {
         const element = document.createElement("li");
-        element.innerHTML = name;
         this.decks.append(element);
-        element.onclick = () => (this.deck = id);
+        element.innerHTML = name;
+        element.onclick = () => {
+            this.deck = Array.from(this.decks.children).findIndex(
+                (search) => search == element
+            );
+        };
+
+        // custom context menu
+        element.oncontextmenu = (event) => {
+            event.preventDefault();
+
+            const box = element.getBoundingClientRect();
+            this.context.style.top = `${box.top - box.height / 2}px`;
+            this.context.style.left = `${box.right}px`;
+            this.context.hidden = false;
+
+            this.delete.onclick = async () => await this.deleteDeck(id);
+        };
+
+        // close context menu
+        document.body.addEventListener("click", (event) => {
+            if ((event.target as HTMLElement).offsetParent != this.context) {
+                this.context.hidden = true;
+            }
+        });
+
         this.deck = id;
+    },
+
+    async deleteDeck(id: number) {
+        await Data.deleteDeck(id);
+        this.decks.children[id].remove();
     },
 
     set deck(i: number) {
