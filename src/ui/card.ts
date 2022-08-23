@@ -1,5 +1,5 @@
-import { Keyboard } from "../keyboard";
-import { Data } from "../data";
+import { Keyboard } from "../lib/keyboard";
+import { Data } from "../data/data";
 
 export const Card = {
     init() {

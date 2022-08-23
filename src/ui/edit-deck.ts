@@ -1,5 +1,5 @@
-import { Data } from "../data";
-import { Keyboard } from "../keyboard";
+import { Data } from "../data/data";
+import { Keyboard } from "../lib/keyboard";
 
 export const EditDeck = {
     modal: document.querySelector("#edit-deck") as HTMLElement,
@@ -15,10 +15,7 @@ export const EditDeck = {
 
                 const start = this.selectionStart;
                 const end = this.selectionEnd;
-                this.value =
-                    this.value.substring(0, start) +
-                    "\t" +
-                    this.value.substring(end);
+                this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
                 this.selectionStart = this.selectionEnd = start + 1;
             }
         });
@@ -27,7 +24,7 @@ export const EditDeck = {
         confirm.onclick = async () => {
             await this.editDeck();
             this.modal.hidden = true;
-        }
+        };
     },
 
     _deck: 0,
@@ -37,15 +34,13 @@ export const EditDeck = {
 
         this.modal.hidden = false;
         this.name.value = deck.name;
-        this.text.value = deck.cards
-            .map((card) => `${card.question}\t${card.answer}`)
-            .join("\n");
+        this.text.value = deck.cards.map((card) => `${card.question}\t${card.answer}`).join("\n");
     },
 
     async editDeck() {
         await Data.editDeck(this._deck, {
             name: this.name.value || undefined,
             text: this.text.value || undefined,
-        })
-    }
+        });
+    },
 };

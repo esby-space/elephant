@@ -1,10 +1,5 @@
 import { ICard, IDeck, IData } from "./types";
-import {
-    readTextFile,
-    writeTextFile,
-    createDir,
-    BaseDirectory,
-} from "@tauri-apps/api/fs";
+import { readTextFile, writeTextFile, createDir, BaseDirectory } from "@tauri-apps/api/fs";
 
 export const Data = {
     data: null as IData | null,
@@ -59,10 +54,7 @@ export const Data = {
         await this.updateJSON();
     },
 
-    async editDeck(
-        id: number,
-        { name, text }: { name?: string; text?: string }
-    ) {
+    async editDeck(id: number, { name, text }: { name?: string; text?: string }) {
         const deck = this.decks[id];
         if (name) deck.name = name;
         if (text) {
@@ -79,4 +71,3 @@ export const Data = {
         return deck;
     },
 };
-

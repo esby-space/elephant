@@ -1,4 +1,4 @@
-import { Data } from "./data";
+import { Data } from "./data/data";
 import { Card } from "./ui/card";
 import { Deck } from "./ui/deck";
 import { CreateDeck } from "./ui/create-deck";

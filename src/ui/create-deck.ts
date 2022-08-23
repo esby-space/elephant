@@ -1,5 +1,5 @@
-import { Data } from "../data";
-import { Keyboard } from "../keyboard";
+import { Data } from "../data/data";
+import { Keyboard } from "../lib/keyboard";
 import { Deck } from "./deck";
 
 export const CreateDeck = {
@@ -11,12 +11,8 @@ export const CreateDeck = {
         Keyboard("Escape").press = () => (this.modal.hidden = true);
 
         // new deck modal
-        const name = document.querySelector(
-            "#new-deck input"
-        ) as HTMLInputElement;
-        const text = document.querySelector(
-            "#new-deck textarea"
-        ) as HTMLTextAreaElement;
+        const name = document.querySelector("#new-deck input") as HTMLInputElement;
+        const text = document.querySelector("#new-deck textarea") as HTMLTextAreaElement;
 
         // allow user to type tab
         text.addEventListener("keydown", function (event) {
@@ -25,18 +21,13 @@ export const CreateDeck = {
 
                 const start = this.selectionStart;
                 const end = this.selectionEnd;
-                this.value =
-                    this.value.substring(0, start) +
-                    "\t" +
-                    this.value.substring(end);
+                this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
                 this.selectionStart = this.selectionEnd = start + 1;
             }
         });
 
         // create a new deck
-        const createDeck = document.querySelector(
-            "#new-deck button"
-        ) as HTMLElement;
+        const createDeck = document.querySelector("#new-deck button") as HTMLElement;
         createDeck.onclick = async () => {
             this.createDeck(name.value, text.value);
             this.modal.hidden = true;

@@ -1,4 +1,4 @@
-import { Data } from "../data";
+import { Data } from "../data/data";
 import { Card } from "./card";
 import { EditDeck } from "./edit-deck";
 
@@ -22,9 +22,7 @@ export const Deck = {
         this.decks.append(element);
         element.innerHTML = name;
         element.onclick = () => {
-            this.deck = Array.from(this.decks.children).findIndex(
-                (search) => search == element
-            );
+            this.deck = Array.from(this.decks.children).findIndex((search) => search == element);
         };
 
         // custom context menu
@@ -37,7 +35,7 @@ export const Deck = {
             this.context.hidden = false;
 
             this.delete.onclick = async () => await this.deleteDeck(id);
-            this.edit.onclick = () => EditDeck.open(id); 
+            this.edit.onclick = () => EditDeck.open(id);
         };
 
         // close context menu
