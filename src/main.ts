@@ -2,6 +2,7 @@ import { Data } from "./data";
 import { Card } from "./ui/card";
 import { Deck } from "./ui/deck";
 import { CreateDeck } from "./ui/create-deck";
+import { EditDeck } from "./ui/edit-deck";
 
 const main = async () => {
     await Data.fetch();
@@ -13,6 +14,7 @@ const UI = {
         Card.init();
         Deck.init();
         CreateDeck.init();
+        EditDeck.init();
     },
 };
 

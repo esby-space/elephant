@@ -1,5 +1,6 @@
 import { Data } from "../data";
 import { Card } from "./card";
+import { EditDeck } from "./edit-deck";
 
 export const Deck = {
     decks: document.querySelector("#files") as HTMLElement,
@@ -13,7 +14,8 @@ export const Deck = {
     },
 
     context: document.querySelector("#deck-context") as HTMLElement,
-    delete: document.querySelector("#delete-deck") as HTMLElement,
+    delete: document.querySelector("#deck-delete") as HTMLElement,
+    edit: document.querySelector("#deck-edit") as HTMLElement,
 
     createDeck(name: string, id: number) {
         const element = document.createElement("li");
@@ -35,6 +37,7 @@ export const Deck = {
             this.context.hidden = false;
 
             this.delete.onclick = async () => await this.deleteDeck(id);
+            this.edit.onclick = () => EditDeck.open(id); 
         };
 
         // close context menu
@@ -52,10 +55,10 @@ export const Deck = {
         this.decks.children[id].remove();
     },
 
-    set deck(i: number) {
-        Card._deck = i;
+    set deck(id: number) {
+        Card._deck = id;
         document.querySelector(".active-deck")?.classList.remove("active-deck");
-        this.decks.children[i].classList.add("active-deck");
+        this.decks.children[id].classList.add("active-deck");
 
         Card.flipped = false;
         Card.card = 0;

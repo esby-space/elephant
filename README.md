@@ -12,5 +12,5 @@ npm install
 npm run tauri dev
 ```
 
-doesn't work at all :p
+card system works very badly and buggyly :p
 

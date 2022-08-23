@@ -55,7 +55,7 @@ export const Data = {
     },
 
     async deleteDeck(id: number) {
-        this.decks.splice(id, id - 1);
+        this.decks.splice(id, id);
         await this.updateJSON();
     },
 

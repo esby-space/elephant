@@ -3,12 +3,12 @@ import { Keyboard } from "../keyboard";
 import { Deck } from "./deck";
 
 export const CreateDeck = {
+    modal: document.querySelector("#new-deck") as HTMLElement,
+
     init() {
-        // modals
-        const deckModal = document.querySelector("#new-deck") as HTMLElement;
         const create = document.querySelector("#create") as HTMLElement;
-        create.onclick = () => (deckModal.hidden = false);
-        Keyboard("Escape").press = () => (deckModal.hidden = true);
+        create.onclick = () => (this.modal.hidden = false);
+        Keyboard("Escape").press = () => (this.modal.hidden = true);
 
         // new deck modal
         const name = document.querySelector(
@@ -39,7 +39,7 @@ export const CreateDeck = {
         ) as HTMLElement;
         createDeck.onclick = async () => {
             this.createDeck(name.value, text.value);
-            deckModal.hidden = true;
+            this.modal.hidden = true;
             text.value = "";
             name.value = "";
         };
