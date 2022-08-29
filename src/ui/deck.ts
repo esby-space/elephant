@@ -4,11 +4,16 @@ import { EditDeck } from "./edit-deck";
 
 export const Deck = {
     decks: document.querySelector("#files") as HTMLElement,
+    findID(element: HTMLElement) {
+        return Array.from(this.decks.children).findIndex(
+            (search) => search == element
+        );
+    },
 
     init() {
         // fill in side bar with card decks
-        Data.decks.forEach((deck, i) => {
-            this.createDeck(deck.name, i);
+        Data.decks.forEach((deck) => {
+            this.createDeck(deck.name);
         });
         this.deck = 0;
     },
@@ -17,12 +22,14 @@ export const Deck = {
     delete: document.querySelector("#deck-delete") as HTMLElement,
     edit: document.querySelector("#deck-edit") as HTMLElement,
 
-    createDeck(name: string, id: number) {
+    createDeck(name: string) {
         const element = document.createElement("li");
         this.decks.append(element);
+
         element.innerHTML = name;
         element.onclick = () => {
-            this.deck = Array.from(this.decks.children).findIndex((search) => search == element);
+            console.log(this.findID(element));
+            this.deck = this.findID(element);
         };
 
         // custom context menu
@@ -34,8 +41,13 @@ export const Deck = {
             this.context.style.left = `${box.right}px`;
             this.context.hidden = false;
 
-            this.delete.onclick = async () => await this.deleteDeck(id);
+            const id = this.findID(element);
             this.edit.onclick = () => EditDeck.open(id);
+            this.delete.onclick = async () => {
+                await Data.deleteDeck(id);
+                this.decks.children[id].remove();
+                this.deck = id;
+            };
         };
 
         // close context menu
@@ -45,15 +57,11 @@ export const Deck = {
             }
         });
 
-        this.deck = id;
-    },
-
-    async deleteDeck(id: number) {
-        await Data.deleteDeck(id);
-        this.decks.children[id].remove();
+        this.deck = this.findID(element);
     },
 
     set deck(id: number) {
+        if (id < 0 || id >= this.decks.children.length) return;
         Card._deck = id;
         document.querySelector(".active-deck")?.classList.remove("active-deck");
         this.decks.children[id].classList.add("active-deck");

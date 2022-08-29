@@ -14,6 +14,10 @@ export const Card = {
 
     _card: 0,
     _deck: 0,
+    set deck(id: number) {
+        this._deck = id;
+    },
+
     set card(i: number) {
         if (i < 0 || i >= Data.cards[this._deck].length) return;
         this._card = i;

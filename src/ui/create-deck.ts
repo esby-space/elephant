@@ -38,7 +38,7 @@ export const CreateDeck = {
 
     async createDeck(name: string, text: string) {
         const deck = await Data.createDeck(name, text);
-        Deck.createDeck(name, Data.decks.length - 1);
+        Deck.createDeck(name);
         return deck;
     },
 };

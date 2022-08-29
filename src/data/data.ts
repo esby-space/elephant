@@ -50,7 +50,14 @@ export const Data = {
     },
 
     async deleteDeck(id: number) {
-        this.decks.splice(id, id);
+        console.log("id: ", id);
+        console.log("before: ", this.decks.map(deck => deck.name));
+
+        const removed = this.data?.decks.splice(id, 1);
+
+        console.log("after: ", this.decks.map(deck => deck.name));
+        console.log("removed: ", removed?.map((deck) => deck.name));
+
         await this.updateJSON();
     },
 
